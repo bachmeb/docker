@@ -1,0 +1,5 @@
+# docker commands
+
+```
+docker ps
+```
