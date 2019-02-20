@@ -3,6 +3,7 @@
 ## References
 * https://docs.docker.com/get-started/
 * https://docs.docker.com/install/linux/docker-ce/centos/
+* https://github.com/NaturalHistoryMuseum/scratchpads2/wiki/Install-Docker-and-Docker-Compose-(Centos-7)
 
 ### Check linux version
 ```
@@ -36,6 +37,12 @@ cat /etc/group | grep docker
 ```
 ```bash
 # docker:x:498:
+```
+```
+systemctl
+```
+```
+sudo usermod -aG docker USERNAME
 ```
 
 ### Build an image and run it as one container
