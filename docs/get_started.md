@@ -50,7 +50,7 @@ sudo systemctl start docker
 ```
 sudo docker run hello-world
 ```
-```bash
+```java
 /*
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
