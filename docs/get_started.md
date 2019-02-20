@@ -43,9 +43,16 @@ systemctl
 ```
 ```
 sudo usermod -aG docker USERNAME
+su USERNAME
 ```
 ```
 sudo systemctl start docker
+```
+```
+docker --version
+```
+```
+docker --version
 ```
 ```
 sudo docker run hello-world
