@@ -34,7 +34,7 @@ sudo yum install containerd.io
 ```
 cat /etc/group | grep docker
 ```
-```
+```bash
 # docker:x:498:
 ```
 
