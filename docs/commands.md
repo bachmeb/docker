@@ -1,8 +1,5 @@
 # docker commands
 
-```
-docker ps
-```
 |Command   |Description   |  
 |---|---|	
 |docker attach|Attach local standard input, output, and error streams to a running container|
