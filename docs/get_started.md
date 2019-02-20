@@ -27,7 +27,15 @@ sudo yum search docker
 # docker.x86_64 : Automates deployment of containerized applications
 ```
 ```
-
+sudo yum install docker-ce
+sudo yum install docker-ce-cli
+sudo yum install containerd.io
+```
+```
+cat /etc/group | grep docker
+```
+```
+# docker:x:498:
 ```
 
 ### Build an image and run it as one container
