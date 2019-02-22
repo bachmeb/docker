@@ -5,14 +5,15 @@
 * https://docs.docker.com/install/linux/docker-ce/centos/
 * https://github.com/NaturalHistoryMuseum/scratchpads2/wiki/Install-Docker-and-Docker-Compose-(Centos-7)
 
-### Check the system linux version
+### Inspect system
+#### Check the system linux version
 ```
 cat /etc/redhat-release 
 ```
 ```bash
 # Red Hat Enterprise Linux Server release 7.3 (Maipo)
 ```
-### Check the system network adapters
+#### Check the system network adapters
 ```
 ip addr show
 ```
@@ -31,6 +32,88 @@ ip addr show
     inet6 fe80::345:56ff:feb6:9sdf/64 scope link 
        valid_lft forever preferred_lft forever
 */
+```
+#### Check system firewall
+```
+sudo iptables -L
+[sudo] password for brianb: 
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain DOCKER (0 references)
+target     prot opt source               destination         
+
+Chain DOCKER-ISOLATION (0 references)
+target     prot opt source               destination         
+
+Chain FORWARD_IN_ZONES (0 references)
+target     prot opt source               destination         
+
+Chain FORWARD_IN_ZONES_SOURCE (0 references)
+target     prot opt source               destination         
+
+Chain FORWARD_OUT_ZONES (0 references)
+target     prot opt source               destination         
+
+Chain FORWARD_OUT_ZONES_SOURCE (0 references)
+target     prot opt source               destination         
+
+Chain FORWARD_direct (0 references)
+target     prot opt source               destination         
+
+Chain FWDI_public (0 references)
+target     prot opt source               destination      
+
+Chain FWDI_public_allow (0 references)
+target     prot opt source               destination         
+
+Chain FWDI_public_deny (0 references)
+target     prot opt source               destination         
+
+Chain FWDI_public_log (0 references)
+target     prot opt source               destination         
+
+Chain FWDO_public (0 references)
+target     prot opt source               destination         
+
+Chain FWDO_public_allow (0 references)
+target     prot opt source               destination         
+
+Chain FWDO_public_deny (0 references)
+target     prot opt source               destination         
+
+Chain FWDO_public_log (0 references)
+target     prot opt source               destination         
+
+Chain INPUT_ZONES (0 references)
+target     prot opt source               destination         
+
+Chain INPUT_ZONES_SOURCE (0 references)
+target     prot opt source               destination         
+
+Chain INPUT_direct (0 references)
+target     prot opt source               destination         
+
+Chain IN_public (0 references)
+target     prot opt source               destination         
+
+Chain IN_public_allow (0 references)
+target     prot opt source               destination         
+
+Chain IN_public_deny (0 references)
+target     prot opt source               destination         
+
+Chain IN_public_log (0 references)
+target     prot opt source               destination         
+
+Chain OUTPUT_direct (0 references)
+target     prot opt source               destination         
 ```
 
 ### Set up your Docker environment
