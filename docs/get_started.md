@@ -16,8 +16,9 @@ cat /etc/redhat-release
 ```
 ip addr show
 ```
-```
-1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
+```java
+/*
++ 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
        valid_lft forever preferred_lft forever
@@ -29,6 +30,7 @@ ip addr show
        valid_lft forever preferred_lft forever
     inet6 fe80::345:56ff:feb6:9sdf/64 scope link 
        valid_lft forever preferred_lft forever
+*/
 ```
 
 ### Set up your Docker environment
