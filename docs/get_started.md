@@ -7,9 +7,9 @@
 
 ### Check linux version
 ```
-$ cat /etc/redhat-release 
+cat /etc/redhat-release 
 ```
-```
+```bash
 # Red Hat Enterprise Linux Server release 7.3 (Maipo)
 ```
 
@@ -26,6 +26,14 @@ sudo yum search docker
 ```
 ```bash
 # docker.x86_64 : Automates deployment of containerized applications
+```
+```
+sudo yum search docker-ce
+```
+```bash
+# docker-ce.x86_64 : The open-source application container engine
+# docker-ce-cli.x86_64 : The open-source application container engine
+# docker-ce-selinux.noarch : SELinux Policies for the open-source application container engine
 ```
 ```
 sudo yum install docker-ce
