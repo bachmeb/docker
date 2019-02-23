@@ -144,9 +144,23 @@ sudo yum search docker-ce
 #### Install docker-ce, docker-ce, and containerd.io
 ```
 sudo yum install docker-ce
-sudo yum install docker-ce-cli
-sudo yum install containerd.io
 ```
+```java
+/*
+===================================================================================================================================================
+ Package                         Arch                     Version                             Repository                                      Size
+===================================================================================================================================================
+Installing:
+ docker-ce                       x86_64                   3:18.09.2-3.el7                     docker-ce-stable                                19 M
+Installing for dependencies:
+ containerd.io                   x86_64                   1.2.2-3.3.el7                       docker-ce-stable                                22 M
+ docker-ce-cli                   x86_64                   1:18.09.2-3.el7                     docker-ce-stable                                14 M
+ libtool-ltdl                    x86_64                   2.4.2-22.el7_3                      rhui-rhel-7-server-rhui-rpms                    49 k
+
+Transaction Summary
+===================================================================================================================================================
+Install  1 Package (+3 Dependent packages)
+*/
 #### See that the docker group has been created
 ```
 cat /etc/group | grep docker
