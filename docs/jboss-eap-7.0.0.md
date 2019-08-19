@@ -4,6 +4,7 @@ This guide uses an EC2 VM in AWS
 ## References
 * https://docs.docker.com/get-started/
 * https://hub.docker.com/r/zheiro/jdk8-jboss-eap7/
+* http://blog.adeel.io/2016/11/06/amazon-ec2-ssh-timeout-due-to-inactivity/
 
 ### Prepare
 #### Download JBoss EAP 7.0.0
@@ -85,9 +86,16 @@ chmod 400 pemfile.pem
 ```
 ping [ec2.ipa.ddr.ess]
 ```
+##### Edit the ssh config file on your local machine to prevent AWS EC2 SSH timeout every 60 seconds
+```
+vi ~/.ssh/config
+```
+```
+ServerAliveInterval 50
+```
 ##### Connect via SSH
 ```
-ssh -i pemfile.pem ec2-user@[ec2.ipa.ddr.ess]
+ssh -v -i pemfile.pem ec2-user@[ec2.ipa.ddr.ess]
 ```
 ##### Check the Linux distro version
 ```
@@ -439,9 +447,22 @@ docker --version
 ```
 #### Compare the network adapters with 
 ```
-
+ip addr show
 ```
+#### Check the firewall rules
+```
+sudo iptables -L
+```
+```
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
 
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+```
 #### Check that the docker group was created
 ```
 cat /etc/group | grep docker
@@ -454,7 +475,7 @@ docker:x:498:
 sudo usermod -aG docker USERNAME
 su USERNAME
 ```
-##### Start docker
+##### Start the docker daemon
 ```
 systemctl
 sudo systemctl start docker
@@ -498,8 +519,8 @@ docker container ls --all
 ```
 ## Build JBoss image
 ```
-mkdir -p ~/docker/jboss/eap7
-cd ~/docker/jboss/eap7/
+mkdir -p ~/docker/jboss/eap7a
+cd ~/docker/jboss/eap7a/
 pwd
 ```
 ```
@@ -511,7 +532,8 @@ FROM jboss/base-jdk:8
 ```
 #### Build the image
 ```
-docker build --tag=friendlyhello .
+ll
+docker build --tag=eap7a .
 ```
 #### List the images
 ```
@@ -524,9 +546,32 @@ docker container ls
 docker container ls -a
 ```
 
-#### Run the container
+#### Run the container with an interactive shell
 ```
-docker run -p 4000:80 friendlyhello
+docker run -it -p 8080:8080 eap7a
+```
+#### Print the working directory
+```
+pwd
+```
+```
+/opt/jboss
+```
+#### List the environment variables
+The HOME directory for the jboss user in this image is set to /opt/jboss
+```
+env
+```
+```
+HOSTNAME=e8638eaf991e
+TERM=xterm
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=01;05;37;41:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=01;36:*.au=01;36:*.flac=01;36:*.mid=01;36:*.midi=01;36:*.mka=01;36:*.mp3=01;36:*.mpc=01;36:*.ogg=01;36:*.ra=01;36:*.wav=01;36:*.axa=01;36:*.oga=01;36:*.spx=01;36:*.xspf=01;36:
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PWD=/opt/jboss
+JAVA_HOME=/usr/lib/jvm/java
+SHLVL=1
+HOME=/opt/jboss
+_=/usr/bin/env
 ```
 
 ```
