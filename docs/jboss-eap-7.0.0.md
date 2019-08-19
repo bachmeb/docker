@@ -3,6 +3,7 @@ This guide uses an EC2 VM in AWS
 
 ## References
 * https://docs.docker.com/get-started/
+* https://hub.docker.com/r/zheiro/jdk8-jboss-eap7/
 
 ### Prepare
 #### Download JBoss EAP 7.0.0
