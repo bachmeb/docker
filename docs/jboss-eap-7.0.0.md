@@ -216,6 +216,20 @@ chmod +x speedtest-cli
 ./speedtest_cli
 ```
 
+#### Install OpenJDK 1.8
+```
+yum search openjdk
+sudo yum install java-1.8.0-openjdk
+```
+```
+java -version
+```
+```
+openjdk version "1.8.0_201"
+OpenJDK Runtime Environment (build 1.8.0_201-b09)
+OpenJDK 64-Bit Server VM (build 25.201-b09, mixed mode)
+```
+
 #### Install Docker
 ```
 sudo yum search docker
