@@ -5,8 +5,13 @@ This guide uses an EC2 VM in AWS
 * https://docs.docker.com/get-started/
 
 ### Prepare
+#### Download JBoss EAP 7.0.0
+* https://developers.redhat.com/products/eap/download
 
-##### Create a new vm
+#### Choose the zip file
+* https://developers.redhat.com/download-manager/file/jboss-eap-7.0.0.zip
+
+#### Create a new vm
 * https://aws.amazon.com/ec2/
 
 ##### Step 1: Choose an Amazon Machine Image (AMI)
@@ -34,18 +39,18 @@ Amazon Linux 2 AMI (HVM), SSD Volume Type - ami-0b898040803850657 (64-bit x86) /
 
 ##### Step 4: Add Storage
 ```
-	Volume Type: Root
-	Device: /dev/xvda
-	Snapshot: snap-ad8e61f8
-	Size (GiB): 8
-	Volume Type: General Purpose SSD (GP2)
-	IOPS: 100 / 3000
-	Delete on Termination: Yes
-	Encrypted: Not Encrypted
+Volume Type: Root
+Device: /dev/xvda
+Snapshot: snap-ad8e61f8
+Size (GiB): 8
+Volume Type: General Purpose SSD (GP2)
+IOPS: 100 / 3000
+Delete on Termination: Yes
+Encrypted: Not Encrypted
 ```
 ##### Step 5: Tag Instance
-	Key: Name
-	Value: Docker VM with JBoss
+Key: Name
+Value: Docker VM with JBoss
 
 ##### Step 6: Configure Security Group 
 *Allow all ICMP and TCP traffic from your IP address. SSH communicates via TCP on port 22.*
@@ -67,50 +72,50 @@ ping [ec2.ipa.ddr.ess]
 ssh -i pemfile.pem ec2-user@[ec2.ipa.ddr.ess]
 ```
 ##### Check the Linux distro version
-	cat /proc/version
-```c
-// Linux version 4.1.17-22.30.amzn1.x86_64 (mockbuild@gobi-build-60009) 
-// (gcc version 4.8.3 20140911 (Red Hat 4.8.3-9) (GCC) ) 
-// #1 SMP Fri Feb 5 23:44:22 UTC 2016
 ```
+cat /proc/version
+```
+```
+Linux version 4.14.123-111.109.amzn2.x86_64 (mockbuild@ip-10-0-1-12) (gcc version 7.3.1 20180303 (Red Hat 7.3.1-5) (GCC)) #1 SMP Mon Jun 10 19:37:57 UTC 2019
+```
+
+##### Install system updates
+```
+sudo yum update	
+```
+
 ##### Check the time
-	date
-	
+```
+date
+```
+
 ##### List the available time zones
-	ls /usr/share/zoneinfo/
+```
+ls /usr/share/zoneinfo/
+```
 
 ##### Update the /etc/sysconfig/clock file with your time zone
-	sudo nano /etc/sysconfig/clock
+```
+sudo nano /etc/sysconfig/clock
+```
 ```
 ZONE="America/New_York"
 UTC=false
 ```
 ##### Create a symbolic link between /etc/localtime and your time zone file
-	sudo ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+```
+sudo ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+```
 
 ##### Check the time
-	date
-
-*[When you launch an instance, it is assigned a hostname that is a form of the private, internal IP address. A typical Amazon EC2 private DNS name looks something like this: ip-12-34-56-78.us-west-2.compute.internal, where the name consists of the internal domain, the service (in this case, compute), the region, and a form of the private IP address. Part of this hostname is displayed at the shell prompt when you log into your instance (for example, ip-12-34-56-78). Each time you stop and restart your Amazon EC2 instance (unless you are using an Elastic IP address), the public IP address changes, and so does your public DNS name, system hostname, and shell prompt. Instances launched into EC2-Classic also receive a new private IP address, private DNS hostname, and system hostname when they're stopped and restarted; instances launched into a VPC don't.](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-hostname.html)*
-
-*[If you have a public DNS name registered for the IP address of your instance (such as webserver.mydomain.com), you can set the system hostname so your instance identifies itself as a part of that domain. This also changes the shell prompt so that it displays the first portion of this name instead of the hostname supplied by AWS (for example, ip-12-34-56-78).](http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/set-hostname.html)*
-
-##### Edit the sysconfig network file
-	sudo nano /etc/sysconfig/network
-
-*Rather than set the hostname of this machine to match a fully qualified domain name, this tutorial assumes we want the server to have a unique hostname that is different than any of the hostnames we define in the public DNS file.*
-
-##### Set the HOSTNAME to be any name you would like for the virtual server
-	HOSTNAME=[somehost].localdomain
-
-##### Edit the hosts file
-	sudo nano /etc/hosts
 ```
-127.0.0.1  [somehost] [somehost].localdomain localhost localhost.localdomain
+date
 ```
 
 ##### Reboot the system to pick up the new hostname and time zone information in all services and applications
-	sudo reboot
+```
+sudo reboot
+```
 
 ##### Connect via SSH
 ```
@@ -118,70 +123,75 @@ ssh -i pemfile.pem ec2-user@[ec2.ipa.ddr.ess]
 ```
 
 ##### Check the time
-	date
-
-##### Switch to super user
-	sudo su
+```
+date
+```
 	
 ##### Check the default options configured for adding a user on this system
-	useradd -D
-    
+```
+sudo useradd -D
+```
+
 ##### Create a non-admin user account for yourself
-	useradd [your user account name]
-    
+```
+useradd [your user account name]
+```
+
 ##### Set your password
-	passwd [your user account name]
+```
+passwd [your user account name]
+```
 
-##### Edit sudoers file
-	vim /etc/sudoers
-	:$
-
-##### Add your account to sudoers file
-	## LET ME SUDO
-	[your user account name] ALL=(ALL) ALL
+##### Add your account to the wheel group
+```
+sudo usermod -aG wheel [your user account name]
+```
 
 ##### Switch to your user account. Be sure to use the -l switch.
-	su -l [your user account name]
-
-##### Ask who am I?
-	whoami
-
-##### Echo the value of the $HOME environment variable
-	echo $HOME
+```
+su -l [your user account name]
+```
 	
 ##### Go home
-	cd ~
-	pwd
-
-##### Change the command prompt to show your username at the fqdn
-	export PS1='[\u@\H \W]\$'
-
-##### Read your .bashrc file
-	cat .bashrc
-	
-##### Add the PS1 command to your .bashrc file
-	echo 'PS1="[\u@\H \W]\$ "'>>~/.bashrc
+```
+cd ~
+pwd
+```
 
 ##### Read your .bashrc file
-	cat .bashrc
-	
+```
+cat .bashrc
+```
+
 ##### Check the hostname of the ec2 instance
-	hostname
+```
+hostname
+```
 
 ##### Check the DNS domain name of the ec2 instance
-	dnsdomainname
+```
+dnsdomainname
+```
 
 ##### Get the IP address of the internal name server
-	cat /etc/resolv.conf
+```
+cat /etc/resolv.conf
+```
 
 ##### Check the routing table
-	route
+```
+route
+```
 
 ##### Check the internal IP address
-	ifconfig
+```
+ifconfig
+```
 
 ##### Check the external IP address
-	wget http://ipinfo.io/ip -qO -
+```
+wget http://ipinfo.io/ip -qO -
+```
 
 ##### Run a speed test (just for fun)
 ```
@@ -190,11 +200,8 @@ chmod +x speedtest_cli.py
 ./speedtest_cli.py
 ```
 
-##### Install system updates
-	sudo yum update	
-
-
+#### Install Docker
 ```
-
 sudo yum search docker
-
+sudo yum install docker
+```
