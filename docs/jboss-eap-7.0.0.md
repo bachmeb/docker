@@ -260,3 +260,45 @@ Total download size: 37 M
 Installed size: 151 M
 Is this ok [y/d/N]: y
 ```
+
+```
+mkdir -p docker/jboss/eap7
+```
+```
+cd docker/jboss/eap7/
+```
+```
+vi Dockerfile
+```
+```
+#Use latest jboss/base-jdk:8 image as the base
+FROM jboss/base-jdk:8
+
+#Set the JBOSS_VERSION env variable
+ENV JBOSS_VERSION 7.0.0
+ENV JBOSS_HOME /opt/jboss/jboss-eap-7.0/
+
+#Copy jboss eap zip file into docker image
+COPY jboss-eap-$JBOSS_VERSION.zip $JBOSS_HOME
+
+# Unzip eap to Jboss home
+RUN cd $JBOSS_HOME
+&& unzip jboss-eap-$JBOSS_VERSION.zip
+&& rm jboss-eap-$JBOSS_VERSION.zip
+
+# Make jboss user owner of jboss home
+chown -R $JBOSS_HOME jboss
+
+# Ensure signals are forwarded to the JVM process correctly for graceful shutdown
+ENV LAUNCH_JBOSS_IN_BACKGROUND true
+
+# Run as the jboss user
+USER jboss
+
+# Expose port 8080 for JBoss
+EXPOSE 8080
+
+# Set the default command to run on boot
+# This will boot JBoss EAP in the standalone mode and bind to all interface
+CMD ["/opt/jboss/jboss-eap-7.0/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+```
