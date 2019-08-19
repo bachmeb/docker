@@ -898,7 +898,8 @@ ENV LAUNCH_JBOSS_IN_BACKGROUND true
 
 # Set the default command to run on boot
 # This will boot JBoss EAP in the standalone mode and bind to all interface
-CMD ["/opt/jboss/jboss-eap-7.0/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+#CMD ["/opt/jboss/jboss-eap-7.0/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+CMD ["nohup", "/opt/jboss/jboss-eap-7.0/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
 ```
 #### Build the image
 ```
@@ -910,11 +911,12 @@ docker image ls -a
 ```
 ```
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-eap7c               latest              f69a385656d3        7 seconds ago       866MB
-<none>              <none>              bd4afe948f76        7 seconds ago       866MB
-<none>              <none>              29ea2b4b17ba        7 seconds ago       866MB
-<none>              <none>              f107f284c1e3        10 seconds ago      866MB
-<none>              <none>              d235e4a4554c        22 seconds ago      677MB
+eap7d               latest              68f43094231c        5 seconds ago       866MB
+<none>              <none>              ceebd690bfc3        5 seconds ago       866MB
+<none>              <none>              c1eed8542506        6 seconds ago       866MB
+<none>              <none>              d3b78ce70105        6 seconds ago       866MB
+<none>              <none>              97c4e78b80f0        9 seconds ago       866MB
+<none>              <none>              642d1390a2eb        20 seconds ago      677MB
 jboss/base-jdk      8                   8a832b9f0f57        6 months ago        513MB
 ```
 #### List the running containers
@@ -933,6 +935,20 @@ docker run -it -p 8080:8080 eap7d
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+### Appendix
 
 ```
 #Use latest jboss/base-jdk:8 image as the base
