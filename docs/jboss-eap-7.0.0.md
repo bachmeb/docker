@@ -210,6 +210,25 @@ route
 ```
 ifconfig
 ```
+```
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.42.14  netmask 255.255.240.0  broadcast 172.31.47.255
+        inet6 fe80::ca3:bcff:fe89:c6ca  prefixlen 64  scopeid 0x20<link>
+        ether 0e:a3:bc:89:c6:ca  txqueuelen 1000  (Ethernet)
+        RX packets 492619  bytes 684798197 (653.0 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 105220  bytes 151237789 (144.2 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 10  bytes 2373 (2.3 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 10  bytes 2373 (2.3 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
 
 ##### Check the external IP address
 ```
@@ -414,19 +433,35 @@ Total download size: 37 M
 Installed size: 151 M
 Is this ok [y/d/N]: y
 ```
+#### Check the docker version
+```
+docker --version
+```
+#### Compare the network adapters with 
+```
 
+```
+
+#### Check that the docker group was created
 ```
 cat /etc/group | grep docker
 ```
-
-```bash
-# docker:x:498:
-systemctl
+```
+docker:x:498:
+```
+##### Add your user account to the docker group
+```
 sudo usermod -aG docker USERNAME
 su USERNAME
+```
+##### Start docker
+```
+systemctl
 sudo systemctl start docker
-docker --version
-sudo docker run hello-world
+```
+#### Run the docker hello-world image
+```
+docker run hello-world
 ```
 ```
 Unable to find image 'hello-world:latest' locally
@@ -464,13 +499,36 @@ docker container ls --all
 ## Build JBoss image
 ```
 mkdir -p ~/docker/jboss/eap7
-```
-```
 cd ~/docker/jboss/eap7/
+pwd
 ```
 ```
 vi Dockerfile
 ```
+```
+#Use latest jboss/base-jdk:8 image as the base
+FROM jboss/base-jdk:8
+```
+#### Build the image
+```
+docker build --tag=friendlyhello .
+```
+#### List the images
+```
+docker image ls
+docker image ls -a
+```
+#### List the running containers
+```
+docker container ls
+docker container ls -a
+```
+
+#### Run the container
+```
+docker run -p 4000:80 friendlyhello
+```
+
 ```
 #Use latest jboss/base-jdk:8 image as the base
 FROM jboss/base-jdk:8
