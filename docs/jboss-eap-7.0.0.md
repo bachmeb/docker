@@ -11,6 +11,11 @@ This guide uses an EC2 VM in AWS
 #### Choose the zip file
 * https://developers.redhat.com/download-manager/file/jboss-eap-7.0.0.zip
 
+#### Keep a copy of the zip file on your local machine
+```
+~/Downloads
+```
+
 #### Create a new vm
 * https://aws.amazon.com/ec2/
 
@@ -96,7 +101,7 @@ ls /usr/share/zoneinfo/
 
 ##### Update the /etc/sysconfig/clock file with your time zone
 ```
-sudo nano /etc/sysconfig/clock
+sudo vi /etc/sysconfig/clock
 ```
 ```
 ZONE="America/New_York"
@@ -117,9 +122,19 @@ date
 sudo reboot
 ```
 
+##### Copy the JBoss EAP zip file to the EC2 VM
+```
+scp -i pemfile.pem ~/Downloads/jboss-eap-7.0.0.zip ec2-user@[ec2.ipa.ddr.ess]:~
+```
+
 ##### Connect via SSH
 ```
 ssh -i pemfile.pem ec2-user@[ec2.ipa.ddr.ess]
+```
+
+##### Move the zip file to the /tmp directory
+```
+mv ~/jboss-eap-7.0.0.zip /tmp
 ```
 
 ##### Check the time
@@ -134,12 +149,12 @@ sudo useradd -D
 
 ##### Create a non-admin user account for yourself
 ```
-useradd [your user account name]
+sudo useradd [your user account name]
 ```
 
 ##### Set your password
 ```
-passwd [your user account name]
+sudo passwd [your user account name]
 ```
 
 ##### Add your account to the wheel group
@@ -147,7 +162,7 @@ passwd [your user account name]
 sudo usermod -aG wheel [your user account name]
 ```
 
-##### Switch to your user account. Be sure to use the -l switch.
+##### Switch to your user account
 ```
 su -l [your user account name]
 ```
@@ -195,13 +210,53 @@ wget http://ipinfo.io/ip -qO -
 
 ##### Run a speed test (just for fun)
 ```
-wget https://raw.github.com/sivel/speedtest-cli/master/speedtest_cli.py
-chmod +x speedtest_cli.py
-./speedtest_cli.py
+wget -O speedtest-cli https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py
+chmod +x speedtest-cli
+./speedtest_cli
 ```
 
 #### Install Docker
 ```
 sudo yum search docker
+```
+```
+docker.x86_64 : Automates deployment of containerized applications
+```
+```
 sudo yum install docker
+```
+```
+Loaded plugins: extras_suggestions, langpacks, priorities, update-motd
+amzn2-core                                                                                                                                                              | 2.4 kB  00:00:00
+Resolving Dependencies
+--> Running transaction check
+---> Package docker.x86_64 0:18.06.1ce-10.amzn2 will be installed
+--> Processing Dependency: pigz for package: docker-18.06.1ce-10.amzn2.x86_64
+--> Processing Dependency: libcgroup for package: docker-18.06.1ce-10.amzn2.x86_64
+--> Processing Dependency: libltdl.so.7()(64bit) for package: docker-18.06.1ce-10.amzn2.x86_64
+--> Running transaction check
+---> Package libcgroup.x86_64 0:0.41-15.amzn2 will be installed
+---> Package libtool-ltdl.x86_64 0:2.4.2-22.2.amzn2.0.2 will be installed
+---> Package pigz.x86_64 0:2.3.4-1.amzn2.0.1 will be installed
+--> Finished Dependency Resolution
+
+Dependencies Resolved
+
+===============================================================================================================================================================================================
+ Package                                     Arch                                  Version                                              Repository                                        Size
+===============================================================================================================================================================================================
+Installing:
+ docker                                      x86_64                                18.06.1ce-10.amzn2                                   amzn2extra-docker                                 37 M
+Installing for dependencies:
+ libcgroup                                   x86_64                                0.41-15.amzn2                                        amzn2-core                                        65 k
+ libtool-ltdl                                x86_64                                2.4.2-22.2.amzn2.0.2                                 amzn2-core                                        49 k
+ pigz                                        x86_64                                2.3.4-1.amzn2.0.1                                    amzn2-core                                        81 k
+
+Transaction Summary
+===============================================================================================================================================================================================
+Install  1 Package (+3 Dependent packages)
+
+Total download size: 37 M
+Installed size: 151 M
+Is this ok [y/d/N]: y
 ```
