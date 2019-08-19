@@ -337,7 +337,39 @@ curl localhost:4000
 ```
 <h3>Hello World!</h3><b>Hostname:</b> 981a9ef44656<br/><b>Visits:</b> <i>cannot connect to Redis, counter disabled</i>[brian@ip-172-31-95-249 ~]$
 ```
-
+Quit
+```
+ctrl-c
+```
+Run the container in the background
+```
+docker run -d -p 4000:80 friendlyhello
+```
+```
+docker container ls
+```
+```
+docker container stop 983j498th98h
+```
+## Summary of commands 
+```
+docker build -t friendlyhello .  # Create image using this directory's Dockerfile
+docker run -p 4000:80 friendlyhello  # Run "friendlyhello" mapping port 4000 to 80
+docker run -d -p 4000:80 friendlyhello         # Same thing, but in detached mode
+docker container ls                                # List all running containers
+docker container ls -a             # List all containers, even those not running
+docker container stop <hash>           # Gracefully stop the specified container
+docker container kill <hash>         # Force shutdown of the specified container
+docker container rm <hash>        # Remove specified container from this machine
+docker container rm $(docker container ls -a -q)         # Remove all containers
+docker image ls -a                             # List all images on this machine
+docker image rm <image id>            # Remove specified image from this machine
+docker image rm $(docker image ls -a -q)   # Remove all images from this machine
+docker login             # Log in this CLI session using your Docker credentials
+docker tag <image> username/repository:tag  # Tag <image> for upload to registry
+docker push username/repository:tag            # Upload tagged image to registry
+docker run username/repository:tag                   # Run image from a registry
+```
 ### Scale your app to run multiple containers
 
 ### Distribute your app across a cluster
